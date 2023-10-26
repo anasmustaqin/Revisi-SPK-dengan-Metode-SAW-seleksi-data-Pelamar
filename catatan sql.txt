@@ -1,0 +1,10 @@
+data-bs-toggle="modal" data-bs-target="#staticBackdrop<?=$data['id_user']?>
+
+
+--pengalaman,kelamin,jurusan,ipk,gaji
+
+select pel.id_pelamar,pel.jenis_kelamin,pend.jurusan_kuliah,pend.ipk,pkr.gaji_terakhir, count(pkr.id_pekerjaan) "Ada Pengalaman"
+from tb_pelamar pel, tb_pekerjaan pkr, tb_pendidikan pend
+where pel.id_pelamar=pkr.id_pelamar
+and pel.id_pelamar=pend.id_pelamar
+group by pel.id_pelamar,pel.jenis_kelamin,pend.jurusan_kuliah,pend.ipk,pkr.gaji_terakhir;

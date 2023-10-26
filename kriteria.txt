@@ -1,0 +1,10 @@
+Jurusan Kuliah 40%
+-Teknik
+
+Jenjang Pendidikan 40%
+-d4
+-S1
+-S2
+ada / tidak pengalaman kerja 20%
+-ada
+-tidak ada
