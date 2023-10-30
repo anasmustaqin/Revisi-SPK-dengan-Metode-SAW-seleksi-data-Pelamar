@@ -1,21 +1,33 @@
 <?php
  session_start();
+ include("../koneksi.php");
+ $query = "SELECT * FROM tb_pelamar";
+ $hasil = mysqli_query($conn,$query);
+ if(!isset($_SESSION["id"]))
+{
+	$_SESSION['pesan'] = "kesalahan sistem";
+    header("Location: ../index.php");
+}
+// ambil data pengguna
+$usersql = "SELECT * FROM tb_user WHERE id_user = ".$_SESSION['id'];
+$hasiluser=mysqli_query($conn,$usersql);
+$user=mysqli_fetch_array($hasiluser);
 ?>
 <!doctype html>
 <html>
   <head>
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <title>E-Recruitment</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
-        <script src="media/js/jquery.js" type="text/javascript"></script>
-        <script src="media/js/jquery.dataTables.js" type="text/javascript"></script>
-        <link rel="StyleSheet" href="css/style.css" type="text/css" />
+        <script src="../media/js/jquery.js" type="text/javascript"></script>
+        <script src="../media/js/jquery.dataTables.js" type="text/javascript"></script>
+        <link rel="StyleSheet" href="../css/style.css" type="text/css" />
         <style type="text/css">
-            @import "media/css/demo_table_jui.css";
-            @import "media/themes/smoothness/jquery-ui-1.8.4.custom.css";
+            @import "../media/css/demo_table_jui.css";
+            @import "../media/themes/smoothness/jquery-ui-1.8.4.custom.css";
         </style>
         
         <style>
@@ -31,7 +43,7 @@
 
   <body>
     <div class="wrap">
-    <img src="img/Header-GG.PNG" alt="Welcome" width="100%" height="200px">
+    <img src="../img/Header-GG.PNG" alt="Welcome" width="100%" height="200px">
     <!--<h1>E-Recruitment PT Gudang Garam, Tbk.</h1> -->
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -40,8 +52,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <script src="popper.min.js"></script>
-    <script src="bootstrap.min.js"></script>
+    <script src="../popper.min.js"></script>
+    <script src="../bootstrap.min.js"></script>
+
+<nav class="navbar navbar-expand-lg navbar-black bg-light">
+
+     <!-- MENU -->   
+
+    <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" href="home_staff.php">Data Pelamar</a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="manageakun_staff.php">Kelola Akun</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">MENU 4</a>
+          </li>
+    </ul>
+
+</nav>
+<table align = "right">
+<tr>
+    <td>
+ <?php
+    echo "Selamat Datang, <strong>".strtoupper($user["nama"])." (".ucwords(strtolower($user["jenis_user"])).")</strong>&nbsp;";
+    echo "<a href='../action.php?act=logout' \" class = 'btn btn-outline-secondary btn-sm'>Logout </a>";
+  ?>
+</td>
+ </tr>
+ </table>
+
 <br><br>
 <h2 align="center">Form Pendaftaran Pelamar</h2>
 <strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong>
@@ -286,10 +327,11 @@
 	                    </tr>
                     </table>
             </div>
-        </div></div>
+        </div></div>  
+	
 		<input type="submit" value="Daftar" class="btn btn-primary btn-sm">
 		<input type="reset" value="Reset" class="btn btn-warning btn-sm">
-		<input type="button" value="Kembali" onclick="location.href='index.php'" class="btn btn-dark btn-sm">
+		<input type="button" value="Kembali" onclick="location.href='home_staff.php'" class="btn btn-dark btn-sm">
 	</div>
 </div>
 </form>

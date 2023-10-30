@@ -77,17 +77,17 @@
             <a class="nav-link" href="listuser.php">Data Pengguna</a>
           </li> 
           <li class="nav-item">
-            <a class="nav-link" href="alternatif.php">Alternatif</a>
+            <a class="nav-link" href="alternatif.php">Kriteria</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="kriteria.php">Kriteria</a>
+            <a class="nav-link" href="kriteria.php">Bobot</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="metode_saw.php">Metode SAW</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="filter_pelamar.php">Hasil Filter Pelamar</a>
-          </li>
+          </li> -->
     </ul>
 
 </nav>
@@ -103,7 +103,7 @@
  </table>
 
 <br><br><br>
-<h3 align = "center">DAFTAR PELAMAR </h3>
+<h3 align = "center">DATA PELAMAR </h3>
 <strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong>
 <br>
 <table id="datatables" class="display">
@@ -123,7 +123,7 @@ $nomor=1;
 while($data=mysqli_fetch_array($hasil)){ ?>
    <tr>
     <!-- <td><?php echo $data['id'];?></td> -->
- <td><?php echo $nomor; ASC?></td>
+ <td><?php echo $nomor;?></td>
     <td><?php echo ucwords(strtolower($data['nama']));?> </td>
     <td><?php echo ucwords(strtolower($data['templahir']));?></td>
     <td><?php echo date('d F Y', strtotime($data['tgllahir']));?></td>
@@ -143,7 +143,7 @@ while($data=mysqli_fetch_array($hasil)){ ?>
             </div>
                 <form method="POST" action="action_admin.php?act=HapusPelamar&id=<?=$data['id_pelamar']?>">
                 <div class="modal-body">
-                    Input Password Anda:
+                    <strong>Input Password Anda:</strong>
                     <input type="password" class="form-control" name="passw" required>
                 </div>
                 <div class="modal-footer">
@@ -155,7 +155,7 @@ while($data=mysqli_fetch_array($hasil)){ ?>
     </div>
 </div>
 <! -- END MODAL -->
-<?php $nomor++;} ?>
+<?php $nomor++ ;} ?>
 </tbody>
 </table>
 </div>

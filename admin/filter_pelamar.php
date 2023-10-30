@@ -77,10 +77,7 @@
           <li class="nav-item">
             <a class="nav-link" href="kriteria.php">Kriteria</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="metode_saw.php">Metode SAW</a>
-          </li>
-          <li class="nav-item">
+                    <li class="nav-item">
             <a class="nav-link active" href="filter_pelamar.php">Hasil Filter Pelamar</a>
           </li>
     </ul>
@@ -97,9 +94,8 @@
  </tr>
  </table>
 <br><br><br>
-<h3 align = "center">HASIL RANGKING METODE SIMPLE ADDITIVE WEIGHTING(SAW) </h3>
+<h3 align = "center">HASIL RANKING METODE SIMPLE ADDITIVE WEIGHTING(SAW) </h3>
 <strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong><br>
-<a href="adduser.php" class="btn btn-success btn-sm" title="Menambahkan Pengguna Baru (Staff / Supervisor)">Tambah Alternatif</a>
 <table id="datatables" class="display">
     <thead>
         <tr>
@@ -113,8 +109,9 @@
    <tbody>
 <?php
 $nomor=1;
+
 $data=mysqli_query("SELECT * tb_alternatif order by id_alternatif") ;
-//while ($a=mysql_fetch_array($data);?>
+//while ($a=mysqli_fetch_array($data);?>
 
   <tr>
     <!-- <td><?php echo $data['id_user'];?></td> -->

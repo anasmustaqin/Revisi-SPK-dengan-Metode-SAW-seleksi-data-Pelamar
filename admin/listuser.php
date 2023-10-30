@@ -72,17 +72,17 @@
             <a class="nav-link active" href="listuser.php">Data Pengguna</a>
           </li> 
           <li class="nav-item">
-            <a class="nav-link " href="alternatif.php">Alternatif</a>
+            <a class="nav-link " href="alternatif.php">Kriteria</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="kriteria.php">Kriteria</a>
+            <a class="nav-link" href="kriteria.php">Bobot</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="metode_saw.php">Metode SAW</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="filter_pelamar.php">Hasil Filter Pelamar</a>
-          </li>
+          </li> -->
     </ul>
 
 </nav>
@@ -97,9 +97,9 @@
  </tr>
  </table>
 <br><br><br>
-<h3 align = "center">DAFTAR PENGGUNA </h3>
+<h3 align = "center">DATA PENGGUNA</h3>
 <strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong><br>
-<a href="adduser.php" class="btn btn-success btn-sm" title="Menambahkan Pengguna Baru (Staff / Supervisor)">Tambah Pengguna Baru</a>
+<a href="adduser.php" class="btn btn-success btn-sm" title="Menambahkan Pengguna Baru (Staff / Supervisor)">Tambah Pengguna Baru</a><br><br>
 <table id="datatables" class="display">
   	<thead>
   		<tr>
@@ -132,8 +132,8 @@ while($data=mysqli_fetch_array($hasil)){ ?>
         onclick="return confirm ('Yakin <?=$button?> Pengguna Ini?')"><?=$button?></a> -->
         <a href="manageuser.php?id=<?=$data['id_user']?>" class="btn btn-primary" title = "Edit data pengguna"> Edit </a>
       <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop<?=$data['id_user']?>" class="btn btn-danger" title = "Pengguna akan dihapus"> Hapus </a>
-</td>
 </tr>
+</td>
 <!-- MODAL untuk Input Password (Hapus Pelamar) -->
 <div class="modal fade" id="staticBackdrop<?=$data['id_user']?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">

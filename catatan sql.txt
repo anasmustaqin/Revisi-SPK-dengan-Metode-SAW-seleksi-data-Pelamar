@@ -8,3 +8,24 @@ from tb_pelamar pel, tb_pekerjaan pkr, tb_pendidikan pend
 where pel.id_pelamar=pkr.id_pelamar
 and pel.id_pelamar=pend.id_pelamar
 group by pel.id_pelamar,pel.jenis_kelamin,pend.jurusan_kuliah,pend.ipk,pkr.gaji_terakhir;
+
+
+select alter.nama_alternatif,krit.cek "model", krit.from,krit.to,krit.bobot,alter.nilai_saw, alter.rangking
+from tb_alternatif alter,tb_kriteria krit
+where alter.id_alternatif=krit.id_alternatif
+
+
+if(cek == "FIX")
+{
+
+select bobot 
+from tb_kriteria
+where id_alternatif='1'
+and to='LAKI-LAKI'
+}
+else
+{
+SELECT * FROM `tb_kriteria` WHERE `id_alternatif` = '5' 
+AND cast(alt_from as integer) <= cast('1000000' as integer) 
+and cast(alt_to as integer) >= cast('1000000' as integer);
+}

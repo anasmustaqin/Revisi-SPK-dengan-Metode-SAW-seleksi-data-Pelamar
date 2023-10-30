@@ -39,7 +39,7 @@ $user=mysqli_fetch_array($hasiluser);
             $(document).ready(function(){
                 $('#datatables').dataTable({
                     "sPaginationType":"full_numbers",
-                    "aaSorting":[[2, "desc"]],
+                    "aaSorting":[[0, "asc"]],
                     "bJQueryUI":true
                 });
             })
@@ -98,12 +98,15 @@ $user=mysqli_fetch_array($hasiluser);
 
 <br><br><br>
 <h3 align = "center">DAFTAR PELAMAR </h3>
+  <td colspan="2" align="center">
+    <a href="register.php" title = "Pendaftaran Pelamar" class="btn btn-success btn-sm">TAMBAH DATA</a>
+  </td>
 <strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong>
 <br>
 <table id="datatables" class="display">
   	<thead>
   		<tr>
-        <th>No</th>
+        <th>ID Pelamar</th>
         <th>Nama</th>
         <th>Tempat Lahir</th>
         <th>Tanggal Lahir</th>
@@ -117,13 +120,13 @@ $nomor=1;
 while($data=mysqli_fetch_array($hasil)){ ?>
    <tr>
     <!-- <td><?php echo $data['id'];?></td> -->
- <td><?php echo $nomor;?></td>
+ <td><?=$data['id_pelamar']?></td>
     <td><?php echo ucwords(strtolower($data['nama']));?> </td>
     <td><?php echo ucwords(strtolower($data['templahir']));?></td>
     <td><?php echo date('d F Y', strtotime($data['tgllahir']));?></td>
     <td><?php echo ucwords(strtolower($data['alamat_tinggal']));?></td>
     <td width="250" align="center">
-      <a class="btn btn-primary" href="details_staff.php?id=<?=$data['id_pelamar']?>">Detail</a>
+      <a class="btn btn-primary" href="details_staff.php?id=<?=$data['id_pelamar']?>">Detail / Edit</a>
       <!-- <a class="btn btn-warning" href="editpelamar.php?id=<?=$data['id_pelamar']?>">Edit</a> -->
 </td>
     

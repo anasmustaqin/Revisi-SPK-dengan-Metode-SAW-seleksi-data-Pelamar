@@ -4,6 +4,107 @@
  $query = "SELECT * FROM tb_user WHERE id_user <> '1' AND jenis_user <> 'administrator'";
  $hasil = mysqli_query($conn,$query);
 
+if (isset($_POST['submit'])) 
+{
+
+    //ambil jumlah alternatif
+    $jum_alt=mysqli_query($conn,"select count(id_alternatif) from tb_alternatif");
+    $jum_alter=mysqli_fetch_row($jum_alt);
+    //ambil semua data karyawannya dulu dengan urutan proses = urutan kolom tidak bisa bolak balik
+
+    $lihat_alt = array('3','1','4','5','2');
+    $sqldata_awal = "select pel.jenis_kelamin,pend.jurusan_kuliah,pend.ipk,pkr.gaji_terakhir, CASE
+                        WHEN count(pkr.id_pekerjaan) = 1 THEN 'ada'
+                        WHEN count(pkr.id_pekerjaan) = 0 THEN 'tidak ada'
+                        END ,pel.id_pelamar ".
+                        "from tb_pelamar pel, tb_pekerjaan pkr, tb_pendidikan pend ".
+                        "where pel.id_pelamar=pkr.id_pelamar ".
+                        "and pel.id_pelamar=pend.id_pelamar ".
+                        "group by pel.id_pelamar, pel.jenis_kelamin, pend.jurusan_kuliah, pend.ipk, pkr.gaji_terakhir order by pel.id_pelamar";
+
+    $datadata_awal=mysqli_query($conn,$sqldata_awal);
+    $alter_normal=0;
+
+    while ($a=mysqli_fetch_row($datadata_awal))
+    {
+        
+        for($i=0;$i<$jum_alter[0];$i++)
+        {   
+            //cek dulu untuk SAW nya, apakah fix atau range?
+            $sql_lihat_saw=mysqli_query($conn,"select cek from tb_alternatif where id_alternatif=$lihat_alt[$i]");
+            $sql_l_saw=mysqli_fetch_row($sql_lihat_saw);
+
+            if($sql_l_saw[0]=="fix")
+            {
+                //isi disini query untuk yg fix
+                $querybobot = "SELECT bobot FROM tb_kriteria WHERE id_alternatif = '$lihat_alt[$i]' and alt_to='$a[$i]'";
+            }
+            else
+            {
+                //isi disini query untuk yg Range
+                $querybobot="SELECT bobot FROM tb_kriteria WHERE id_alternatif = '$lihat_alt[$i]' AND cast(alt_from as FLOAT) <= cast('$a[$i]' as FLOAT) and cast(alt_to as FLOAT) >= cast('$a[$i]' as FLOAT)";
+            }
+
+            $sql_bobot_tipe=mysqli_query($conn,$querybobot);    
+            $bobotrange =mysqli_fetch_row($sql_bobot_tipe);
+            //jurusan = lainnya
+            if (!mysqli_num_rows($sql_bobot_tipe)){ $kosong = 0;
+                if ($lihat_alt[$i] == 1 && $kosong == 0 ) {
+                $querybobot = "SELECT bobot FROM tb_kriteria WHERE id_alternatif = '$lihat_alt[$i]' and alt_to='lainnya'"; }
+                $sql_bobot_tipe=mysqli_query($conn,$querybobot);
+                $bobotrange =mysqli_fetch_row($sql_bobot_tipe);
+            }
+            //echo $querybobot.";<br>";
+            //echo $bobotrange[0].";<br>";
+
+            //ambil bobot nya
+            $all_bobot[$alter_normal][$i]=$bobotrange[0];
+
+        }
+        $alter_normal++;
+        //echo "<br> <br>";
+    }
+
+
+    $alter_normal=0;
+    $datadata_awal1=mysqli_query($conn,$sqldata_awal);
+    while ($b=mysqli_fetch_row($datadata_awal1))
+    {
+        $final_score=0;
+
+        for($i=0;$i<$jum_alter[0];$i++)
+        {   
+            //cek dulu untuk tipe SAW nya, apakah Benefit atau cost? dan juga ambil persentase rangking nya
+
+            $sql_lihat_saw1=mysqli_query($conn,"select nilai_saw,rangking from tb_alternatif where id_alternatif=$lihat_alt[$i]");
+            $sql_l_saw1=mysqli_fetch_row($sql_lihat_saw1);
+
+            $maksimum[$i]=max($all_bobot[$i]);
+            $minimum[$i]=min($all_bobot[$i]);
+
+            if($sql_l_saw1[0]=="1") //benefit
+            {
+                $bobot_norm=$all_bobot[$alter_normal][$i]/$maksimum[$i];    
+            }
+            else
+            {
+                $bobot_norm=$minimum[$i]/$all_bobot[$alter_normal][$i];
+            }
+            
+            $rangking_persen=$sql_l_saw1[1]/100;
+
+            $final_score=$final_score+($rangking_persen*$bobot_norm);
+
+        }
+    
+        $sql_update_final=mysqli_query($conn,"update tb_pelamar set final_score= $final_score where id_pelamar=$b[5]");
+        $alter_normal++;
+    }
+    echo "SUCCESS";
+    
+}
+ 
+
 ?>
 <html>
   <head>
@@ -73,17 +174,17 @@
             <a class="nav-link" href="listuser.php">Data Pengguna</a>
           </li> 
           <li class="nav-item">
-            <a class="nav-link" href="alternatif.php">Alternatif</a>
+            <a class="nav-link" href="alternatif.php">Kriteria</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="kriteria.php">Kriteria</a>
+            <a class="nav-link" href="kriteria.php">Bobot</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="metode_saw.php">Metode SAW</a>
           </li>
-          <li class="nav-item">
+         <!--  <li class="nav-item">
             <a class="nav-link " href="filter_pelamar.php">Hasil Filter Pelamar</a>
-          </li>
+          </li> -->
     </ul>
 
 </nav>
@@ -98,62 +199,56 @@
  </tr>
  </table>
 <br><br><br>
-<h3 align = "center">HASIL RANGKING METODE SIMPLE ADDITIVE WEIGHTING(SAW)  </h3>
-<strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong><br>
-<a href="adduser.php" class="btn btn-success btn-sm" title="Menambahkan Pengguna Baru (Staff / Supervisor)">Tambah Alternatif</a>
-<table id="datatables" class="display">
-    <thead>
-        <tr>
-        <th>No</th>
-        <th>Nama Alternatif</th>
-        <th>Nilai SAW</th>
-        <th>Rangking</th>
-        <th>Aksi</th>
-      </tr> 
-    </thead>
-   <tbody>
-<?php
-$nomor=1;
-$data=mysqli_query("SELECT * tb_alternatif order by id_alternatif") ;
-//while ($a=mysql_fetch_array($data);?>
+<h3 align = "center">DATA PELAMAR YANG MEMENUHI KRITERIA SEBAGAI IT STAFF</h3>
 
-  <tr>
-    <!-- <td><?php echo $data['id_user'];?></td> -->
- <td><?php echo $nomor;?></td>
-    <td><?php echo $data['username'];?> </td>
-    <td><?php echo ucwords(strtolower($data['nama']));?></td>
-    <td><?php echo ucwords(strtolower($data['jenis_user']));?></td>
-        <td width="250">
-      <!-- <a href="action_admin.php?act=UbahUser&id=<?=$data['id_user']?>" class="btn btn-primary" title = "<?=$buttitle?>"
-        onclick="return confirm ('Yakin <?=$button?> Pengguna Ini?')"><?=$button?></a> -->
-        <a href="manageuser.php?id=<?=$data['id_user']?>" class="btn btn-primary" title = "Edit data pengguna"> Edit </a>
-      <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop<?=$data['id_user']?>" class="btn btn-danger" title = "Pengguna akan dihapus"> Hapus </a>
+<table class ="table table-bordered">                
+    <thead>
+      <tr>
+        <th class="text-center">Nama Pelamar</th>
+        <th class="text-center">Jenis Kelamin</th>
+        <th class="text-center">Jurusan</th>
+        <th class="text-center">IPK</th>
+        <th class="text-center">Pengalaman Kerja</th>
+        <th class="text-center">Gaji Terakhir</th>
+        <th class="text-center">Final Score</th>
+        <th class="text-center">Ranking</th>
+      </tr>
+    </thead>
+
+<?php
+$sqlaternatif = "SELECT pel.id_pelamar,pel.nama, pel.jenis_kelamin,pend.jurusan_kuliah,pend.ipk,pkr.gaji_terakhir,
+                CASE
+                WHEN count(pkr.id_pekerjaan) = 1 THEN 'ada'
+                WHEN count(pkr.id_pekerjaan) = 0 THEN 'tidak ada'
+                END AS 'Pengalaman',pel.final_score FROM tb_pelamar pel, tb_pekerjaan pkr, tb_pendidikan pend WHERE pel.id_pelamar=pkr.id_pelamar AND pel.id_pelamar=pend.id_pelamar GROUP BY pel.id_pelamar, pel.jenis_kelamin, pend.jurusan_kuliah, pend.ipk, pkr.gaji_terakhir ORDER BY pel.final_score desc";
+
+$dataalter=mysqli_query($conn,$sqlaternatif);
+$idx =1;
+while ($a=mysqli_fetch_array($dataalter)) { 
+?>
+    <tr>
+        <td class="text-center"><?=ucwords(strtolower($a['nama']))?> </td>
+        <td class="text-center"><?php if ($a['jenis_kelamin'] == "l") { echo "Laki-Laki"; } else { echo "Perempuan"; } ?></td>
+        <td class="text-center"><?=ucwords(strtolower($a['jurusan_kuliah']))?> </td>
+        <td class="text-center"><?=$a['ipk'];?> </td>
+        <td class="text-center"><?php if ($a['Pengalaman'] == "ada") { echo "Ada Pengalaman"; } else { echo "Tidak Ada Pengalaman"; } ?> </td>
+        <td class="text-center"><?php echo "Rp. ".number_format($a['gaji_terakhir'],2,",",".");?></td>
+        <td class="text-center"><?=$a['final_score'];?> </td>
+        <td class="text-center"><?=$idx?> </td>
+    </tr>
+<?php 
+$idx +=1;}
+?>
 </td>
 </tr>
-<!-- MODAL untuk Input Password (Hapus Pelamar) -->
-<div class="modal fade" id="staticBackdrop<?=$data['id_user']?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fs-5" id="exampleModalLabel">Hapus Pengguna "<?=ucwords(strtolower($data['nama']));?>"</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-                <form method="POST" action="action_admin.php?act=HapusUser&id=<?=$data['id_user']?>">
-                <div class="modal-body">
-                    Input Password Anda:
-                    <input type="password" class="form-control" name="passw" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batalkan</button>
-                    <button type="submit" class="btn btn-primary">Proses</button>
-                </div>
-            </form>
-         </div>
-    </div>
-</div>
-<?php $nomor++; ?>
-</tbody>
 </table>
+
+
+<form method="POST" action="metode_saw.php">
+    <input type="submit" class="btn btn-success btn-sm" name="submit" value="Proses Saw">
+</form>
+
+<strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong><br>
 </div>
   </body>
 </html>

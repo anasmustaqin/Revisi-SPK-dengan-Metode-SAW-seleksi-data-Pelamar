@@ -1,0 +1,98 @@
+Halaman :
+Judul i
+Persetujuan ii
+Lembar Pengesahan iii
+Lembar Pernyataan iv
+Motto v
+Abstak vi
+Kata Pengantar vii
+Daftar Isi viii
+
+BAB I
+PENDAHULUAN 1
+1.1 LATAR BELAKANG 1
+1.2 Identifikasi Masalah 3
+BAB II
+TINJAUAN PUSTAKA 5
+2.1	Konsep Sistem Pendukung Keputusan (SPK) 5
+2.2	Bahasa Pemograman PHP (Personal Home Page) 6
+2.3	Bootstrap 8
+2.4	Metode Simple Additive Weight (SAW) 9
+2.5	Aplikasi SAW dalam Berbagai Konteks 9
+2.6	Kelebihan dan Keterbatasan SAW 10
+BAB III
+METODOLOGI PENELITIAN 14
+3.1	Analisa 14
+3.2	Rumusan masalah 14
+3.3	Merancang Unified Modeling Language (UML) 15
+3.4	Diagram Sequens 17
+3.5	Diagram Aktivitas 21
+3.6	Diagram Use Case 21
+3.7	Diagram Class 22
+3.8	Diagram komponen 23
+3.9	Struktur Database 24
+3.10	Tujuan Penelitian 28
+3.11	Batasan Masalah 28
+3.12	Kontribusi Penelitian 29
+BAB IV
+PENGUJIAN DAN HASIL 
+4.1 Hasil pengujian sistem 30
+4.2 Hasil Pengujian Software 40
+4.3 Tujuan Pengujian Perangkat Lunak 41
+4.4 Tahapan Pengujian 41
+4.5 Metode Pengujian 42
+4.6 Proses pengujian program 44
+BAB V 
+KESIMPULAN DAN SARAN 47
+DAFTAR PUSTAKA 48
+DAFTAR RIWAYAT HIDUP 49
+
+
+GAMBAR 
+Gambar 1.1 Release Bahasa Pemograman PHP terbaru (8)
+Gambar 1 2 Rumus penentuan Maksimal dan Minimal (12)
+Gambar  1 3 Rumus penentuan Maksimal dan Minimal (12)
+Gambar  3.1 Simbol-simbol dan fungsinya (18)
+Gambar  3.2 Sequen Diagram Pelamar  (19)
+Gambar  3.3 Sequen Diagram Staf & Administrator (19)
+Gambar  3.4 Diagram Aktivitas (20)
+Gambar  3.5 Diagram Use Case (20)
+Gambar  3.6  Diagram Class (21)
+Gambar  3.7  Diagram Use Case (22)
+Gambar 3.8 Tabel pelamar (23)
+Gambar 3.9 Tabel Pengalaman kerja (24)
+Gambar 3.10 Tabel Keluarga (24)
+Gambar 3.11 Tabel kriteria (25)
+Gambar 3.12 Tabel Pendidikan (25)
+Gambar 3.13 Tabel Alternatif(26)
+Gambar 3.14 Tabel Organisasi (26)
+Gambar 3.15 Tabel User (27)
+Gambar  4.1 Halaman awal saat login (29)
+Gambar  4.2 Halaman awal saat login (29
+Gambar  4.3 Halaman administrator (30)
+Gambar  4.4 Halaman user(31)
+Gambar  4.5  Edit akses jenis pengguna (32)
+Gambar  4.4 Formulir Registrasi Pelamar (33)
+Gambar  4.5 Formulir Registrasi Pelamar (34)
+Gambar  4.6 Formulir Registrasi Pelamar (35)
+Gambar  4.7 Penentuan kriteria (36)
+Gambar  4.8 Pemilihan Kriteria (37)
+Gambar  4.9 Proses dengan Metode S-A-W (39)
+
+TABEL 
+Tabel 1. 1 Menentukan Benefit dan Cost (11)
+Tabel 1. 2 Tabel data pelamar (23)
+Tabel 1. 3 Tabel pengalaman kerja (24)
+Tabel 1.4 Tabel keluarga (24)
+Tabel 1.5 Tabel kriteria (25)
+Tabel 1.6 Tabel pendidikan (25)
+Tabel 1.7 Tabel alternatif (26)
+Tabel 1.8 Tabel Organisasi (26)
+Tabel 1.9 Tabel User (27)
+Tabel 4.1 Pengujian Halaman Depan (43)
+Tabel 4.2 Pengujian Halaman Login Admin (44)
+Tabel 4.3 Pengujian Halaman Login Staf (45)
+
+
+
+

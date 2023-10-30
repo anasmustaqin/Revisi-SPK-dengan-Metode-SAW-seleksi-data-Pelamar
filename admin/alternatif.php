@@ -73,17 +73,17 @@
             <a class="nav-link" href="listuser.php">Data Pengguna</a>
           </li> 
           <li class="nav-item">
-            <a class="nav-link active" href="alternatif.php">Alternatif</a>
+            <a class="nav-link active" href="alternatif.php">Kriteria</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="kriteria.php">Kriteria</a>
+            <a class="nav-link" href="kriteria.php">Bobot</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="metode_saw.php">Metode SAW</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="filter_pelamar.php">Hasil Filter Pelamar</a>
-          </li>
+          </li> -->
     </ul>
 
 </nav>
@@ -98,18 +98,18 @@
  </tr>
  </table>
 <br><br><br>
-<h3 align = "center">PEMILIHAN ALTERNATIF</h3>
-<br>
-<h3 align = "center">METODE SIMPLE ADDITIVE WEIGHTING(SAW)  </h3>
+<h3 align = "center">RANKING KRITERIA</h3>
+
 <strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong><br>
 <!-- <a href="addalternatif.php" class="btn btn-success btn-sm" title="Menambahkan Pengguna Baru (Staff / Supervisor)">Tambah Alternatif</a> -->
     <hr>
+    <br>
         <div class="table-responsive">
             <table class ="table table-bordered"> 
                              
   	<thead>
   	  <tr>
-        <th class="text-center">No</th>
+        <th class="text-center">Nomor</th>
         <th class="text-center">Nama Alternatif</th>
         <th class="text-center">Nilai SAW</th>
         <th class="text-center">Ranking</th>
@@ -123,7 +123,7 @@ $nomor=1;
 while ($a=mysqli_fetch_array($dataalter)) {
 ?>
     <tr>
-        <td class="text-center"><?php echo $nomor++?> </td>
+        <td class="text-center"><?php echo $a['id_alternatif'];?> </td>
         <td class="text-center"><?php echo $a['nama_alternatif'];?> </td>
         <td class="text-center"><?php if ($a['nilai_saw']==1) { echo "Benefit"; }
         else { echo "Cost";}

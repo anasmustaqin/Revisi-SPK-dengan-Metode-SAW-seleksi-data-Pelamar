@@ -151,7 +151,7 @@ $hasil=mysqli_query($conn,$query);
                 </div>
                 <form method="POST" action="action_admin.php?act=UbahJenisUser&id=<?=$data['id_user']?>">
                 <div class="modal-body">
-                    Input Password Anda:
+                    <strong>Input Password Anda:</strong>
                     <input type="password" class="form-control" name="passw" required>
                 </div>
                 <div class="modal-footer">
@@ -173,7 +173,7 @@ $hasil=mysqli_query($conn,$query);
                  </div>
                  <form method="POST" action="action_admin.php?act=UbahUser&id=<?=$data['id_user']?>">
                  <div class="modal-body">
-                     Input Password Anda:
+                     <strong>Input Password Anda:</strong>
                      <input type="password" class="form-control" name="passw" required>
                  </div>
                  <div class="modal-footer">
@@ -195,7 +195,7 @@ $hasil=mysqli_query($conn,$query);
                 </div>
                 <form method="POST" action="action_admin.php?act=resetpass&id=<?=$data['id_user']?>">
                 <div class="modal-body">
-                    Input Password Anda:
+                    <strong>Input Password Anda:</strong>
                     <input type="password" class="form-control" name="passw" required>
                 </div>
                 <div class="modal-footer">
@@ -217,7 +217,7 @@ $hasil=mysqli_query($conn,$query);
                 </div>
                 <form method="POST" action="action_admin.php?act=HapusUser&id=<?=$data['id_user']?>">
                 <div class="modal-body">
-                    Input Password Anda:
+                    <strong>Input Password Anda:</strong>
                     <input type="password" class="form-control" name="passw" required>
                 </div>
                 <div class="modal-footer">

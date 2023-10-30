@@ -2,7 +2,7 @@
 session_start();
 include_once("../koneksi.php");
 $act = $_GET["act"];
-$id = $_GET['id'];
+$id = $_GET['idpelamar'];
 // mencocokan pass inputan dengan database
 $passsql = "SELECT password FROM tb_user WHERE jenis_user = 'staff' AND status = 'y' AND id_user = ".$id; 
 $hasilpass = mysqli_query($conn,$passsql);
@@ -36,7 +36,7 @@ switch ($act)
 		$nilai = $_POST['nilai'];
 		$judul = strtolower($_POST['judul']);
 
-		// oRGANISASI
+		// ORGANISASI
 		$organisasi = strtolower($_POST['nama_org']);
 		$jab_org = strtolower($_POST['jabatan_org']);
 		$masuk_org = $_POST['masuk_org'];
@@ -55,18 +55,87 @@ switch ($act)
 		$keluarga = strtolower($_POST['nama_kel']);
 		$relasi = strtolower($_POST['relasi']);
 		$tgllahir_kel = $_POST['tgllahir_kel'];
+	break;
+
+	case 'reg': //untuk pendaftaran pelamar baru
+		$ktp= $_POST['ktp'];
+		//cek NIK KTP sudah ada di DB? kl sudah ada, tidak bisa input pelamar, kl belum ada langsung insert ke db
+		$cekktp = mysqli_query($conn, "SELECT nik_ktp FROM tb_pelamar WHERE nik_ktp = '$ktp'"); 
+		 if($cekktp->num_rows > 0) {
+			$_SESSION["pesan"] = "Gagal tambah Pelamar, NIK KTP Pelamar sudah ada.";
+		 }
+		 else { // insert ke db apabila NIK KTP belum pernah ada
+		 
+			//PERSONAL
+			$nama = strtolower($_POST['nama']);
+			$panggilan	= strtolower($_POST['panggilan']);
+			$templahir= strtolower($_POST['templahir']);
+		
+			$tgllahir = $_POST['tgllahir'];
+			$jk = $_POST['jk'];
+			$agama = strtolower($_POST['agama']);
+			$alamat_tinggal = strtolower($_POST['alamat_tinggal']);
+			$alamat_ktp= strtolower($_POST['alamat_ktp']);
+			$hp = $_POST['hp'];
+			$wa = $_POST['wa'];
+			$email = strtolower($_POST['email']);
+
+			//PENDIDIKAN
+			$jenjang= $_POST['jenjang'];
+			$sekolah = strtolower($_POST['sma']);
+			$masuk_sma = $_POST['masuk_sma'];
+			$lulus_sma = $_POST['lulus_sma'];
+			$jurusan_sma =strtolower( $_POST['jurusan']);
+			$universitas = strtolower($_POST['universitas']);
+			$masuk_kuliah = $_POST['masuk_kuliah'];
+			$lulus_kuliah = $_POST['lulus_kuliah'];
+			$jurusan_kuliah = strtolower($_POST['jurusan_kuliah']);
+			$nilai = $_POST['nilai'];
+			$judul = strtolower($_POST['judul']);
 
 		//ORGANISASI (AKAN TERISI JIKA DI CENTANG)
-		if (isset($_POST['organisasi'])) { $status_org = "true"; }
+		if (isset($_POST['organisasi'])) {
+			$organisasi = strtolower($_POST['nama_org']);
+			$jab_org = strtolower($_POST['jabatan_org']);
+			$masuk_org = $_POST['masuk_org'];
+			$keluar_org = $_POST['keluar_org'];
+			$jenis_org = strtolower($_POST['jenis']);
+			$status_org = "true";
+		}
 		else { $status_org = "false"; }
 
 		//PEKERJAAN (AKAN TERISI JIKA DI CENTANG)
-		if (isset($_POST['pekerjaan'])) { $status_per = "true"; }
+		if (isset($_POST['pekerjaan'])) {
+			$perusahaan = strtolower($_POST['perusahaan']);
+			$jab_per = strtolower($_POST['jabatan_per']);
+			$masuk_per = $_POST['masuk_per'];
+			$keluar_per = $_POST['keluar_per'];
+			$gaji = $_POST['gaji'];
+			$resign = strtolower($_POST['resign']);
+			$status_per = "true";
+		}
 		else { $status_per = "false"; }
 
 		//KELUARGA (AKAN TERISI JIKA DI CENTANG)
-		if (isset($_POST['keluarga'])) { $status_kel = "true";	}
+		if (isset($_POST['keluarga'])) {
+			$keluarga = strtolower($_POST['nama_kel']);
+			$relasi = strtolower($_POST['relasi']);
+			$tgllahir_kel = $_POST['tgllahir_kel'];
+			$status_kel = "true";
+		}
 		else { $status_kel = "false"; }
+		
+		// AMBIL ID TERAKHIR (id pelamar)
+		$queryambilid = "SELECT id_pelamar FROM tb_pelamar ORDER BY id_pelamar DESC LIMIT 1";
+		$resultambilid = mysqli_query($conn,$queryambilid);
+		$rowid = mysqli_fetch_array($resultambilid);
+		$index = $rowid["id_pelamar"]+1;
+
+		// AMBIL ID TERAKHIR (id pendidikan)
+		$queryambilidpend = "SELECT id_pendidikan FROM tb_pendidikan ORDER BY id_pendidikan DESC LIMIT 1";
+		$resultambilidpend = mysqli_query($conn,$queryambilidpend);
+		$rowidpend = mysqli_fetch_array($resultambilidpend);
+		$indexpend = $rowidpend["id_pendidikan"]+1;
 
 		// AMBIL ID TERAKHIR (id organisasi)
 		$queryambilidorg = "SELECT id_organisasi FROM tb_organisasi ORDER BY id_organisasi DESC LIMIT 1";
@@ -86,114 +155,99 @@ switch ($act)
 		$rowidkel = mysqli_fetch_array($resultambilidkel);
 		$indexkel = $rowidkel["id_keluarga"]+1;
 
-		$querypersonal = "UPDATE tb_pelamar SET nama = '$nama', panggilan = '$panggilan', templahir = '$templahir', tgllahir = '$tgllahir',jenis_kelamin = '$jk', agama = '$agama', alamat_tinggal = '$alamat_tinggal', alamat_ktp = '$alamat_ktp', hp = '$hp', wa = '$wa', email = '$email' WHERE id_pelamar = ".$id;	
-		$hasilper = mysqli_query($conn,$querypersonal);
-		if ($hasilper)
+		if (is_uploaded_file($_FILES["foto"]["tmp_name"])) {
+			$uploadFile = $_FILES["foto"];
+			$uploadDir = "img/";
+			// Extract nama file yang diupload
+			$extractFile = pathinfo($uploadFile["name"]);
+		}
+		$newName = $nama.".".$extractFile["extension"]; // yang disimpan di database adalah $newName
+		if (move_uploaded_file($uploadFile['tmp_name'],$uploadDir.$newName))
 		{
-			$querypendidikan = "UPDATE tb_pendidikan SET sma = '$sekolah', awal_sma = '$masuk_sma', lulus_sma = '$lulus_sma',jurusan_sma = '$jurusan_sma', jenjang_pendidikan = '$jenjang', universitas = '$universitas', awal_kuliah = '$masuk_kuliah', lulus_kuliah = '$lulus_kuliah', jurusan_kuliah = '$jurusan_kuliah', ipk = '$nilai', judul_skripsi = '$judul' WHERE id_pelamar = ".$id;
-			$hasilpend = mysqli_query($conn,$querypendidikan);
-			if ($hasilpend)
+			$upload = "berhasil";			
+		}
+		else 
+		{
+			$_SESSION["pesan"] = "Upload Foto Gagal";
+			header('Location: register.php');
+		}
+		if ($upload == "berhasil")
+		{
+			$querypersonal = "INSERT INTO tb_pelamar VALUES ('$index','$nama','$panggilan','$nik_ktp','$templahir','$tgllahir','$jk','$agama','$alamat_tinggal','$alamat_ktp','$hp','$wa','$email','$newName')";	
+			$hasilper = mysqli_query($conn,$querypersonal);
+			if ($hasilper)
 			{
-				if ($status_org == "true")
+				$querypendidikan = "INSERT INTO tb_pendidikan VALUES ('$index','$indexpend','$sekolah','$masuk_sma','$lulus_sma','$jurusan_sma','$jenjang','$universitas','$masuk_kuliah','$lulus_kuliah','$jurusan_kuliah','$nilai','$judul')";
+				$hasilpend = mysqli_query($conn,$querypendidikan);
+				if ($hasilpend)
 				{
-					$queryorg = "INSERT INTO tb_organisasi VALUES ('$index','$indexorg','$organisasi','$jab_org','$masuk_org','$keluar_org','$jenis_org')";
-					$hasilorg = mysqli_query($conn,$queryorg);
-					if ($hasilorg)
+					if ($status_org == "true")
 					{
-						$statusqueryorg = " organisasi berhasil ";
+						$queryorg = "INSERT INTO tb_organisasi VALUES ('$index','$indexorg','$organisasi','$jab_org','$masuk_org','$keluar_org','$jenis_org')";
+						$hasilorg = mysqli_query($conn,$queryorg);
+						if ($hasilorg)
+						{
+							$statusqueryorg = " organisasi berhasil ";
+						}
+						else
+						{
+							$_SESSION["pesan"] = "Gagal Menambahkan Organisasi";
+							header('Location: register.php');
+						}
 					}
-					else
+					else if ($status_per == "true")
 					{
-						$_SESSION["pesan"] = "Gagal Menambahkan Organisasi";
-						header('Location: editpelamar.php?id='.$id);
+						$queryker = "INSERT INTO tb_pekerjaan VALUES ('$index','$indexker','$perusahaan','$jab_per','$masuk_per','$keluar_per','$gaji','$resign')";
+						$hasilker = mysqli_query($conn,$queryker);
+						if ($hasilker)
+						{
+							$statusqueryker = " pekerjaan berhasil ";
+						}
+						else
+						{
+							$_SESSION["pesan"] = "Gagal Menambahkan Pekerjaan";
+							header('Location: register.php');
+						}
+					}
+					else if ($status_kel == "true")
+					{
+						$querykel = "INSERT INTO tb_keluarga VALUES ('$index','$indexkel','$keluarga','$relasi','$tgllahir_kel')";
+						$hasilkel = mysqli_query($conn,$querykel);
+						if ($hasilkel)
+						{
+							$statusquerykel = " keluarga berhasil ";
+						}
+						else
+						{
+							$_SESSION["pesan"] = "Gagal Menambahkan Keluarga";
+							header('Location: register.php');
+						}
 					}
 				}
-				else if ($status_org == "false")
+				else
 				{
-					$queryorg = "UPDATE tb_organisasi SET nama_organisasi = '$organisasi', jabatan = '$jab_org', tanggal_masuk = '$masuk_org', tanggal_keluar = '$keluar_org', jenis_organisasi ='$jenis_org' WHERE id_pelamar = ".$id ;
-					$hasilorg = mysqli_query($conn,$queryorg);
-					if ($hasilorg)
-					{
-						$statusqueryorg = " organisasi berhasil ";
-					}
-					else
-					{
-						$_SESSION["pesan"] = "Gagal Memperbarui Organisasi";
-						header('Location: editpelamar.php?id='.$id);
-					}
-				}
-				else if ($status_per == "true")
-				{
-					$queryker = "INSERT INTO tb_pekerjaan VALUES ('$index','$indexker','$perusahaan','$jab_per','$masuk_per','$keluar_per','$gaji','$resign')";
-					$hasilker = mysqli_query($conn,$queryker);
-					if ($hasilker)
-					{
-						$statusqueryker = " pekerjaan berhasil ";
-					}
-					else
-					{
-						$_SESSION["pesan"] = "Gagal Menambahkan Pekerjaan";
-						header('Location: editpelamar.php?id='.$id);
-					}
-				}
-				else if ($status_per == "false")
-				{
-					$queryker = "UPDATE tb_pekerjaan SET nama_perusahaan = '$perusahaan', jabatan = '$jab_per', tahun_masuk = '$masuk_per', tahun_keluar = '$keluar_per', gaji_terakhir = '$gaji', alasan_keluar = '$resign' WHERE $id_pelamar = ".$id;
-					$hasilker = mysqli_query($conn,$queryker);
-					if ($hasilker)
-					{
-						$statusqueryker = " pekerjaan berhasil ";
-					}
-					else
-					{
-						$_SESSION["pesan"] = "Gagal Memperbarui Pekerjaan";
-						header('Location: editpelamar.php?id='.$id);
-					}
-				}
-				else if ($status_kel == "true")
-				{
-					$querykel = "INSERT INTO tb_keluarga VALUES ('$index','$indexkel','$keluarga','$relasi','$tgllahir_kel')";
-					$hasilkel = mysqli_query($conn,$querykel);
-					if ($hasilkel)
-					{
-						$statusquerykel = " keluarga berhasil ";
-					}
-					else
-					{
-						$_SESSION["pesan"] = "Gagal Menambahkan Keluarga";
-						header('Location: editpelamar.php?id='.$id);
-					}
-				}
-				else if ($status_kel == "false")
-				{
-					$querykel = "UPDATE tb_keluarga SET nama = '$keluarga', relasi = '$relasi', tanggal_lahir = '$tgllahir_kel' WHERE id_pelamar = ".$id;
-					$hasilkel = mysqli_query($conn,$querykel);
-					if ($hasilkel)
-					{
-						$statusquerykel = " keluarga berhasil ";
-					}
-					else
-					{
-						$_SESSION["pesan"] = "Gagal Memperbarui Keluarga";
-						header('Location: editpelamar.php?id='.$id);
-					}
+					$_SESSION["pesan"] = "Gagal Menambahkan Pendidikan";
+					header('Location: register.php');
 				}
 			}
 			else
 			{
-				$_SESSION["pesan"] = "Gagal Memperbarui Pendidikan";
-				header('Location: editpelamar.php?id='.$id);
+				$_SESSION["pesan"] = "Gagal Menambahkan Personal";
+				header('Location: register.php');
 			}
 		}
 		else
 		{
-			$_SESSION["pesan"] = "Gagal Memperbarui Personal";
-			header('Location: editpelamar.php?id='.$id);
+			$_SESSION["pesan"] = "terjadi kesalahan sistem";
+			header('Location: register.php');
 		}
-		if ($statusqueryorg == " organisasi berhasil " && $statusqueryker == " pekerjaan berhasil " && $statusquerykel == " keluarga berhasil ") {
-			$_SESSION["pesan"] = "berhasil Memperbarui Personal";
-			header('Location: editpelamar.php?id='.$id);
+
+		if ($statusqueryorg = " organisasi berhasil " || $statusqueryker = " pekerjaan berhasil " || $statusquerykel = " keluarga berhasil ")
+		{
+			$_SESSION["pesan"] = "Pelamar Berhasil Terdaftar";
+			header('Location: register.php');
 		}
+	}
 	break;
 
 	default:

@@ -79,18 +79,24 @@ $hasilker=mysqli_query($conn,$queryker);
 
      <!-- MENU -->   
 
-    <ul class="nav nav-pills">
+      <ul class="nav nav-pills">
           <li class="nav-item">
             <a class="nav-link active" href="home_admin.php">Data Pelamar</a>
           </li>
            <li class="nav-item">
             <a class="nav-link" href="listuser.php">Data Pengguna</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href="alternatif.php">Alternatif</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Kelola Bobot</a>
+            <a class="nav-link" href="kriteria.php">Kriteria</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Filter Kandidat</a>
+            <a class="nav-link" href="metode_saw.php">Metode SAW</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="filter_pelamar.php">Hasil Filter Pelamar</a>
           </li>
     </ul>
 
@@ -132,6 +138,10 @@ $hasilker=mysqli_query($conn,$queryker);
                     <tr>
                           <td style="width: 874px">Panggilan</td>
                           <td style="width: 435px"><?php echo ucwords(strtolower($data['panggilan']));?></td>
+                    </tr>
+                    <tr>
+                          <td style="width: 874px">NIK KTP</td>
+                          <td style="width: 435px"><?=$data['nik_ktp']?></td>
                     </tr>
                      <tr>
 					     <td style="width: 874px">Tempat Lahir</td>
@@ -369,7 +379,7 @@ $hasilker=mysqli_query($conn,$queryker);
             </div>
                 <form method="POST" action="action_admin.php?act=HapusPelamar&id=<?=$data['id_pelamar']?>">
                 <div class="modal-body">
-                    Input Password Anda:
+                    <strong>Input Password Anda:</strong>
                     <input type="password" class="form-control" name="passw" required>
                 </div>
                 <div class="modal-footer">

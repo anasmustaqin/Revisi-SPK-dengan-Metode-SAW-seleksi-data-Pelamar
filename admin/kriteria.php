@@ -73,17 +73,17 @@
             <a class="nav-link" href="listuser.php">Data Pengguna</a>
           </li> 
           <li class="nav-item">
-            <a class="nav-link" href="alternatif.php">Alternatif</a>
+            <a class="nav-link" href="alternatif.php">Kriteria</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="kriteria.php">Kriteria</a>
+            <a class="nav-link active" href="kriteria.php">Bobot</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="metode_saw.php">Metode SAW</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="filter_pelamar.php">Hasil Filter Pelamar</a>
-          </li>
+          </li> -->
     </ul>
 
 </nav>
@@ -98,120 +98,48 @@
  </tr>
  </table>
 <br><br><br>
-<h3 align = "center">PENENTUAN KRITERIA</h3>
+
+<h3 align = "center">Bobot</h3>
+<br>
+
 <strong><?=$_SESSION["pesan"];$_SESSION["pesan"]="";?></strong><br>
-<table border = "0" style = "font-size:small;" width = "950px" align="center" class="table">
-<tr>
-<td>
-    <div class="accordion" id="accordionExample">
-        <div class="accordion-item" align="center">
-            <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="left: 0px; top: 0px; width: 100%">Jurusan</strong></button></h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <table border="1" width="100%" class="table">
-                    <tr>
-                        <td style="width: 874px">
-                      <?php
-                    $sqljurusan = "SELECT * FROM tb_kriteria WHERE id_alternatif = 1";
-                    $hasiljurusan = mysqli_query($conn,$sqljurusan);
-                    while ($jurusan = mysqli_fetch_array($hasiljurusan)){
-                    ?>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><?=ucwords(strtolower($jurusan['to']))?>, <strong>Bobot: </strong><?=$jurusan['bobot']?></li>
-                        </ul>
-                    <?php } ?>
-                    </td></tr>
-                    
-                </table>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item" align="center">
-            <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseTwo" style="left: 0px; top: 0px; width: 100%">Pengalaman Kerja</strong></button></h2>
-            <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <table border="1" width="100%" class="table">
-                    <tr>
-                        <td style="width: 874px">
-                        <?php
-                    $sqlpeng = "SELECT * FROM tb_kriteria WHERE id_alternatif = 2";
-                    $hasilpeng = mysqli_query($conn,$sqlpeng);
-                    while ($pengalaman = mysqli_fetch_array($hasilpeng)){
-                    ?>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><?=ucwords(strtolower($pengalaman['to']))?>, <strong>Bobot: </strong><?=$pengalaman['bobot']?></li>
-                        </ul>
-                    <?php } ?></td></tr>
-                </table>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item" align="center">
-            <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseThree" style="left: 0px; top: 0px; width: 100%">Jenis Kelamin</strong></button></h2>
-            <div id="collapseThree" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <table border="1" width="100%" class="table">
-                    <tr>
-                        <td style="width: 874px">
-                        <?php
-                    $sqlkel = "SELECT * FROM tb_kriteria WHERE id_alternatif = 3";
-                    $hasilkel = mysqli_query($conn,$sqlkel);
-                    while ($kelamin = mysqli_fetch_array($hasilkel)){
-                    ?>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><?=ucwords(strtolower($kelamin['to']))?>, <strong>Bobot: </strong><?=$kelamin['bobot']?></li>
-                        </ul>
-                    <?php } ?></td></tr>
-                </table>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item" align="center">
-            <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseFour" style="left: 0px; top: 0px; width: 100%">Rentang IPK</strong></button></h2>
-            <div id="collapseFour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <table border="1" width="100%" class="table">
-                    <tr>
-                        <td style="width: 874px">
-                        <?php
-                    $sqlipk = "SELECT * FROM tb_kriteria WHERE id_alternatif = 4";
-                    $hasilipk = mysqli_query($conn,$sqlipk);
-                    while ($ipk = mysqli_fetch_array($hasilipk)){
-                    ?>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><?=$ipk['from']?> - <?=$ipk['to']?>, <strong>Bobot: </strong><?=$ipk['bobot']?></li>
-                        </ul>
-                    <?php } ?></td></tr>
-                </table>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item" align="center">
-            <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseFive" style="left: 0px; top: 0px; width: 100%">Rentang Gaji</strong></button></h2>
-            <div id="collapseFive" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <table border="1" width="100%" class="table">
-                    <tr>
-                        <td style="width: 874px">
-                        <?php
-                    $sqlgaji = "SELECT * FROM tb_kriteria WHERE id_alternatif = 5";
-                    $hasilgaji = mysqli_query($conn,$sqlgaji);
-                    while ($gaji = mysqli_fetch_array($hasilgaji))
-                    {
-                    ?><ul class="list-group list-group-flush">
-                            <li class="list-group-item"><?=$gaji['from']?> - <?=$gaji['to']?>, <strong>Bobot: </strong><?=$gaji['bobot']?></li>
-                        </ul>
-                    <?php } ?></td></tr>
-                </table>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- <a href="addalternatif.php" class="btn btn-success btn-sm" title="Menambahkan Pengguna Baru (Staff / Supervisor)">Tambah Alternatif</a> -->
+    <hr>
+        <div class="table-responsive">
+<table class ="table table-bordered">                        
+    <thead>
+      <tr>
+        <th hidden class="text-center">ID Kriteria</th>
+        <th class="text-center">Kriteria</th>
+        <th class="text-center">Range Dari</th>
+        <th class="text-center">Range Sampai / Fix</th>
+        <th class="text-center">Bobot</th>
+        <th class="text-center">Model SAW</th>
+        <th hidden class="text-center">Ranking</th>
+      </tr> 
+    </thead>
+<?php
+$sqlaternatif = "select krit.id_kriteria,alt.nama_alternatif, krit.alt_from,krit.alt_to,krit.bobot,alt.nilai_saw, alt.rangking ". 
+                "from tb_alternatif alt,tb_kriteria krit ".
+                "where alt.id_alternatif=krit.id_alternatif order by alt.nama_alternatif,cast(krit.alt_from as integer) desc;";
+
+$dataalter=mysqli_query($conn,$sqlaternatif);
+$nomor=1;
+
+while ($a=mysqli_fetch_array($dataalter)) {
+?>
+    <tr>
+        <td hidden class="text-center"><?php echo $a['id_kriteria'];?> </td>
+        <td class="text-center"><?php echo ucwords($a['nama_alternatif']);?> </td>
+        <td class="text-center"><?php echo $a['alt_from'];?> </td>
+        <td class="text-center "><?php echo $a['alt_to'];?> </td>
+        <td class="text-center"><?php echo $a['bobot'];?> </td>
+        <td class="text-center"><?php if ($a['nilai_saw']==1) {echo "Benefit";} else { echo "Cost";}?>
+        <td hidden class="text-center"><?php echo $a['rangking'];?> </td>
+    </tr>
+<?php 
+}
+?>
 </td>
 </tr>
 </table>

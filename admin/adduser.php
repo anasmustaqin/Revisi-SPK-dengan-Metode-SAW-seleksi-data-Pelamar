@@ -65,18 +65,23 @@
 
     <ul class="nav nav-pills">
           <li class="nav-item">
-            <a class="nav-link" href="home_admin.php">Data Pelamar</a>
+            <a class="nav-link " href="home_admin.php">Data Pelamar</a>
           </li>
            <li class="nav-item">
             <a class="nav-link active" href="listuser.php">Data Pengguna</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link " href="alternatif.php">Kriteria</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Kelola Bobot</a>
+            <a class="nav-link" href="kriteria.php">Bobot</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Filter Kandidat</a>
+            <a class="nav-link" href="metode_saw.php">Metode SAW</a>
           </li>
-    </ul>
+         <!--  <li class="nav-item">
+            <a class="nav-link" href="filter_pelamar.php">Hasil Filter Pelamar</a>
+          </li> -->
 
 </nav>
 <table align = "right">

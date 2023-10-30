@@ -293,7 +293,7 @@ $user=mysqli_fetch_array($hasiluser);
 	                </tr>
 	                <tr>
 	                    <td>Tahun Keluar</td>
-	                    <td><input type="number" min="1900" max="2030" name="keluar_per" class="form-control form-control-sm" placeholder="ct:2022" value="<?=ucwords(strtolower($dataker['tahun_keluar']));?>"></td>
+	                    <td><input type="number" min="1900" max="2030" name="keluar_per" class="form-control form-control-sm" placeholder="ct:2022" value="<?=$dataker['tahun_keluar']));?>"></td>
 	                </tr>
 					<tr>
 				    <td>Gaji</td>
